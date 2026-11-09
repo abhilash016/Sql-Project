@@ -1,0 +1,76 @@
+------------------------------------------------
+-- Part 7 writing intermediate level queries --
+------------------------------------------------
+-- Intermediate queries on sales and revenue system --
+
+-- 11. Display customer names along with their order IDs.
+SELECT c.customer_name, o.order_id
+FROM customers c
+JOIN orders o
+ON c.customer_id = o.customer_id;
+-- 12. Find the total number of orders placed by each customer.
+SELECT c.customer_id,
+       c.customer_name,
+       COUNT(o.order_id) AS total_orders
+FROM customers c
+JOIN orders o
+ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.customer_name;
+-- 13. Calculate the total sales amount for each product.
+SELECT product_id,
+       SUM(price * quantity) AS total_sales
+FROM order_details
+GROUP BY product_id;
+-- 14. Find the top 3 best-selling products based on quantity.
+SELECT p.product_id,
+       p.product_name,
+       SUM(od.quantity) AS total_quantity_sold
+FROM products p
+JOIN order_details od
+ON p.product_id = od.product_id
+GROUP BY p.product_id, p.product_name
+ORDER BY total_quantity_sold DESC
+LIMIT 3;
+-- 15. Display customers who have never placed an order.
+SELECT c.customer_id, c.customer_name
+FROM customers c
+LEFT JOIN orders o
+ON c.customer_id = o.customer_id
+WHERE o.order_id IS NULL;
+-- 16. Find the average price of products.
+SELECT AVG(price) AS avg_price
+FROM products;
+-- 17. Display the customer who placed the highest number of orders.
+SELECT c.customer_id,
+       c.customer_name,
+       COUNT(o.order_id) AS total_orders
+FROM customers c
+JOIN orders o
+ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.customer_name
+ORDER BY total_orders DESC
+LIMIT 1;
+-- 18. Find total revenue generated on each order date.
+SELECT o.order_date,
+       SUM(od.price * od.quantity) AS total_revenue
+FROM orders o
+JOIN order_details od
+ON o.order_id = od.order_id
+GROUP BY o.order_date
+ORDER BY o.order_date;
+-- 19. Display product names along with their order quantities.
+SELECT p.product_name, od.quantity
+FROM products p
+JOIN order_details od
+ON p.product_id = od.product_id;
+-- 20. Find customers whose total purchase amount is greater than ₹10,000.
+SELECT c.customer_id,
+       c.customer_name,
+       SUM(od.price * od.quantity) AS total_purchase
+FROM customers c
+JOIN orders o
+ON c.customer_id = o.customer_id
+JOIN order_details od
+ON o.order_id = od.order_id
+GROUP BY c.customer_id, c.customer_name
+HAVING SUM(od.price * od.quantity) > 10000;
