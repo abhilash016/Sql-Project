@@ -1,0 +1,168 @@
+------- Creating Database --------
+CREATE DATABASE Sales_Revenue_DB;
+USE Sales_Revenue_DB;
+---------------------------------------
+-- part1 Creating tables. --
+---------------------------------------
+-- CREATING TABLE 1 CUSTOMERS --
+CREATE TABLE CUSTOMERS (
+    CUSTOMER_ID INT PRIMARY KEY,
+    CUSTOMER_NAME VARCHAR(100) NOT NULL,
+    CITY VARCHAR(50),
+    PHONE VARCHAR(15));
+-- CREATING TABLE 2 ORDERS --
+CREATE TABLE ORDERS (
+    ORDER_ID INT PRIMARY KEY,
+    CUSTOMER_ID INT,
+    ORDER_DATE DATE,
+
+    FOREIGN KEY (CUSTOMER_ID)
+    REFERENCES CUSTOMERS(CUSTOMER_ID));
+-- CREATING TABLE 3 PRODUCTS --
+CREATE TABLE PRODUCTS (
+    PRODUCT_ID INT PRIMARY KEY,
+    PRODUCT_NAME VARCHAR(100) NOT NULL,
+    CATEGORY VARCHAR(50),
+    PRICE DECIMAL(10,2));
+ALTER TABLE PRODUCTS
+ADD STOCK_QUANTITY INT DEFAULT 0;
+UPDATE PRODUCTS
+SET STOCK_QUANTITY = 50;
+-- CREATING TABLE 4 ORDER_DETAILS --
+CREATE TABLE ORDER_DETAILS (
+    ORDER_DETAIL_ID INT PRIMARY KEY,
+    PRODUCT_ID INT,
+    ORDER_ID INT,
+    PRICE DECIMAL(10,2),
+    QUANTITY INT,
+
+    FOREIGN KEY (PRODUCT_ID)
+    REFERENCES PRODUCTS(PRODUCT_ID),
+
+    FOREIGN KEY (ORDER_ID)
+    REFERENCES ORDERS(ORDER_ID)
+);
+-- INSERT RECORDS INTO CUSTOMERS --
+INSERT INTO CUSTOMERS
+(CUSTOMER_ID, CUSTOMER_NAME, CITY, PHONE)
+VALUES
+(101, 'Abhi', 'Anantapur', '9876543210'),
+(102, 'Rahul', 'Bangalore', '9876543211'),
+(103, 'Priya', 'Hyderabad', '9876543212'),
+(104, 'Kiran', 'Chennai', '9876543213'),
+(105, 'Sai', 'Vijayawada', '9876543214'),
+(106, 'Arjun', 'Mumbai', '9876543215'),
+(107, 'Sneha', 'Delhi', '9876543216'),
+(108, 'Vamsi', 'Anantapur', '9876543217'),
+(109, 'Pooja', 'Pune', '9876543218'),
+(110, 'Charan', 'Hyderabad', '9876543219'),
+(111, 'Divya', 'Bangalore', '9876543220'),
+(112, 'Naveen', 'Chennai', '9876543221'),
+(113, 'Meena', 'Mumbai', '9876543222'),
+(114, 'Rohit', 'Delhi', '9876543223'),
+(115, 'Kavya', 'Vijayawada', '9876543224'),
+(116, 'Suresh', 'Pune', '9876543225'),
+(117, 'Anjali', 'Hyderabad', '9876543226'),
+(118, 'Manoj', 'Anantapur', '9876543227'),
+(119, 'Harish', 'Bangalore', '9876543228'),
+(120, 'Swathi', 'Chennai', '9876543229');
+SELECT*FROM CUSTOMERS;
+-- INSERT RECORDS INTO PRODUCTS --
+INSERT INTO PRODUCTS
+(PRODUCT_ID, PRODUCT_NAME, CATEGORY, PRICE)
+VALUES
+(201, 'Mobile', 'Electronics', 15000),
+(202, 'Laptop', 'Electronics', 45000),
+(203, 'Keyboard', 'Accessories', 1000),
+(204, 'Mouse', 'Accessories', 500),
+(205, 'Headphones', 'Electronics', 2000),
+(206, 'Smart Watch', 'Electronics', 3500),
+(207, 'Television', 'Electronics', 30000),
+(208, 'Refrigerator', 'Home Appliances', 25000),
+(209, 'Washing Machine', 'Home Appliances', 22000),
+(210, 'Microwave Oven', 'Home Appliances', 12000),
+(211, 'Shoes', 'Fashion', 2500),
+(212, 'T-Shirt', 'Fashion', 800),
+(213, 'Jeans', 'Fashion', 1800),
+(214, 'Backpack', 'Accessories', 1500),
+(215, 'Tablet', 'Electronics', 18000),
+(216, 'Printer', 'Electronics', 10000),
+(217, 'Office Chair', 'Furniture', 7500),
+(218, 'Study Table', 'Furniture', 6000),
+(219, 'Power Bank', 'Accessories', 1200),
+(220, 'Bluetooth Speaker', 'Electronics', 3000);
+SELECT*FROM PRODUCTS;
+-- INSERT RECORDS INTO ORDERS --
+INSERT INTO ORDERS
+(ORDER_ID, CUSTOMER_ID, ORDER_DATE)
+VALUES
+(1001, 101, '2026-10-01'),
+(1002, 102, '2026-10-02'),
+(1003, 103, '2026-10-03'),
+(1004, 104, '2026-10-04'),
+(1005, 105, '2026-10-05'),
+(1006, 106, '2026-10-06'),
+(1007, 107, '2026-10-07'),
+(1008, 108, '2026-10-08'),
+(1009, 109, '2026-10-09'),
+(1010, 110, '2026-10-10'),
+(1011, 111, '2026-10-11'),
+(1012, 112, '2026-10-12'),
+(1013, 113, '2026-10-13'),
+(1014, 114, '2026-10-14'),
+(1015, 115, '2026-10-15'),
+(1016, 116, '2026-10-16'),
+(1017, 117, '2026-11-01'),
+(1018, 118, '2026-11-02'),
+(1019, 119, '2026-11-03'),
+(1020, 120, '2026-11-04');
+SELECT*FROM ORDERS;
+-- INSERT RECORDS INTO ORDER_DETAILS --
+INSERT INTO ORDER_DETAILS
+(ORDER_DETAIL_ID, ORDER_ID, PRODUCT_ID, PRICE, QUANTITY)
+VALUES
+(2001, 1001, 201, 15000, 2),
+(2002, 1001, 203, 1000, 1),
+
+(2003, 1002, 202, 45000, 1),
+(2004, 1002, 204, 500, 2),
+
+(2005, 1003, 205, 2000, 2),
+(2006, 1003, 206, 3500, 1),
+
+(2007, 1004, 207, 30000, 1),
+(2008, 1004, 219, 1200, 2),
+
+(2009, 1005, 208, 25000, 1),
+(2010, 1005, 210, 12000, 1),
+
+(2011, 1006, 209, 22000, 1),
+(2012, 1006, 214, 1500, 2),
+
+(2013, 1007, 211, 2500, 2),
+(2014, 1007, 212, 800, 3),
+
+(2015, 1008, 213, 1800, 2),
+(2016, 1008, 215, 18000, 1),
+
+(2017, 1009, 216, 10000, 1),
+(2018, 1009, 203, 1000, 2),
+
+(2019, 1010, 217, 7500, 1),
+(2020, 1010, 218, 6000, 1),
+
+(2021, 1011, 201, 15000, 1),
+(2022, 1011, 205, 2000, 2),
+
+(2023, 1012, 202, 45000, 1),
+(2024, 1012, 206, 3500, 2),
+
+(2025, 1013, 220, 3000, 2),
+(2026, 1013, 204, 500, 3),
+
+(2027, 1014, 208, 25000, 1),
+(2028, 1014, 219, 1200, 1),
+
+(2029, 1015, 212, 800, 5),
+(2030, 1015, 211, 2500, 1);
+SELECT*FROM ORDER_DETAILS;
